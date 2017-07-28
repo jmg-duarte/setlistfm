@@ -22,6 +22,7 @@ func (a Artist) String() string {
 }
 
 type Artists struct {
+	Type         string   `json:"type,omitempty"`
 	Artists      []Artist `json:"artist"`
 	Total        int      `json:"total"`
 	Page         int      `json:"page"`
