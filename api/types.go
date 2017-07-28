@@ -136,7 +136,7 @@ type User struct {
 	URL      string `json:"url"`
 }
 
-func (u User) String() string{
+func (u User) String() string {
 	jsonString, err := json.Marshal(u)
 	if err != nil {
 		panic("User.String()")
@@ -164,7 +164,7 @@ type Song struct {
 	Tape  bool   `json:"tape"`
 }
 
-func (s Song) String() string{
+func (s Song) String() string {
 	jsonString, err := json.Marshal(s)
 	if err != nil {
 		panic("Song.String()")
