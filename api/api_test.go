@@ -26,3 +26,10 @@ func TestSearchForArtists(t *testing.T) {
 	res, _ = SearchForArtists("65f4f0c5-ef9e-490c-aee3-909e7ae6b2ab", "", "", 0)
 	fmt.Println(res)
 }
+
+func TestSearchForCities(t *testing.T) {
+	res, _ := SearchForCities("Portugal", "", "", "", 0)
+	fmt.Println(res)
+	res, _ = SearchForCities("", "Pasadena", "", "", 0)
+	fmt.Println(res)
+}

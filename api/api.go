@@ -19,6 +19,7 @@ const (
 	ARTIST_SETLISTS_BY_MBID = "1.0/artist/%s/setlists"
 	ARTISTS_SEARCH          = "1.0/search/artists"
 	CITY_BY_GEOID           = "1.0/city/%s"
+	CITY_SEARCH = "1.0/search/cities"
 	HEADER_KEY              = "x-api-key"
 	HEADER_ACCEPT_KEY       = "Accept"
 	HEADER_ACCEPT_VALUE     = "application/json"
@@ -125,8 +126,6 @@ func SearchForArtists(artistMbid, artistName, artistTmid string, page int) (*Art
 	}
 	req.URL.RawQuery = q.Encode()
 
-	fmt.Printf("%b\n", q)
-
 	body, err := executeRequest(req)
 	if err != nil {
 		return nil, err
@@ -139,6 +138,52 @@ func SearchForArtists(artistMbid, artistName, artistTmid string, page int) (*Art
 	}
 
 	return artists, nil
+}
+
+func SearchForCities(country, city, state, stateCode string, page int) (*Cities, error){
+	req, err := http.NewRequest("GET", REST_ENDPOINT + CITY_SEARCH, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add(HEADER_KEY, SETLIST_FM_API_KEY)
+	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
+
+	q := req.URL.Query()
+
+	if country != ""{
+		q.Add("country", country)
+	}
+
+	if city == ""{
+		return nil, fmt.Errorf("setlistfmapi: you must specify a city when searching for a city")
+	}
+	q.Add("name", city)
+
+	if state != ""{
+		q.Add("state", state)
+	}
+
+	if stateCode != ""{
+		q.Add("stateCode", stateCode)
+	}
+
+	// Consider changing page to string
+	if page > 0 {
+		q.Add("p", strconv.Itoa(page))
+	}
+	req.URL.RawQuery = q.Encode()
+
+	body, err := executeRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	cities := new(Cities)
+	err = json.Unmarshal(body, &cities)
+	if err != nil {
+		return nil, err
+	}
+	return cities, nil
 }
 
 func executeRequest(req *http.Request) ([]byte, error) {
