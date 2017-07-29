@@ -99,7 +99,7 @@ func CityByGeoID(geoID string) (*City, error) {
 	return city, nil
 }
 
-func SearchForArtists(artistMbid, artistName, artistTmid string, page int) (*Artists, error) {
+func SearchForArtists(artistMbid, artistName string, artistTmid, page int) (*Artists, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+ARTISTS_SEARCH, nil)
 	if err != nil {
 		return nil, err
@@ -117,8 +117,8 @@ func SearchForArtists(artistMbid, artistName, artistTmid string, page int) (*Art
 		q.Add("artistName", artistName)
 	}
 
-	if artistTmid != "" {
-		q.Add("artistTmid", artistTmid)
+	if artistTmid > 0 {
+		q.Add("artistTmid", strconv.Itoa(artistTmid))
 	}
 
 	// Consider changing page to string
