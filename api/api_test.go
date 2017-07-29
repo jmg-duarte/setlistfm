@@ -33,3 +33,8 @@ func TestSearchForCities(t *testing.T) {
 	res, _ = SearchForCities("", "Pasadena", "", "", 0)
 	fmt.Println(res)
 }
+
+func TestListAllCountries(t *testing.T) {
+	res, _ := ListAllCountries()
+	fmt.Println(res)
+}

@@ -20,6 +20,7 @@ const (
 	ARTISTS_SEARCH          = "1.0/search/artists"
 	CITY_BY_GEOID           = "1.0/city/%s"
 	CITY_SEARCH = "1.0/search/cities"
+	COUNTRIES_LIST = "1.0/search/countries"
 	HEADER_KEY              = "x-api-key"
 	HEADER_ACCEPT_KEY       = "Accept"
 	HEADER_ACCEPT_VALUE     = "application/json"
@@ -184,6 +185,28 @@ func SearchForCities(country, city, state, stateCode string, page int) (*Cities,
 		return nil, err
 	}
 	return cities, nil
+}
+
+func ListAllCountries() (*Countries, error){
+	req, err := http.NewRequest("GET", REST_ENDPOINT + COUNTRIES_LIST, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add(HEADER_KEY, SETLIST_FM_API_KEY)
+	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
+
+	body, err := executeRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	countries := new(Countries)
+	err = json.Unmarshal(body, &countries)
+	if err != nil {
+		return nil, err
+	}
+
+	return countries, nil
 }
 
 func executeRequest(req *http.Request) ([]byte, error) {
