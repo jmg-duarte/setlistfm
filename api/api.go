@@ -10,11 +10,12 @@ import (
 )
 
 var (
-	SETLIST_FM_API_KEY = ""
+	SETLIST_FM_API_KEY = "e1d7b2e5-c3b7-459b-9597-cf5fd9296182"
 )
 
 const (
 	REST_ENDPOINT           = "https://api.setlist.fm/rest/"
+
 	ARTIST_BY_MBID          = "1.0/artist/%s"
 	ARTIST_SETLISTS_BY_MBID = "1.0/artist/%s/setlists"
 	ARTISTS_SEARCH          = "1.0/search/artists"
@@ -24,6 +25,7 @@ const (
 	HEADER_KEY              = "x-api-key"
 	HEADER_ACCEPT_KEY       = "Accept"
 	HEADER_ACCEPT_VALUE     = "application/json"
+	SETLIST_SEARCH = "1.0/search/setlists"
 )
 
 func ArtistByMBID(MBID string) (*Artist, error) {
@@ -99,7 +101,7 @@ func CityByGeoID(geoID string) (*City, error) {
 	return city, nil
 }
 
-func SearchForArtists(artistMbid, artistName string, artistTmid, page int) (*Artists, error) {
+func SearchForArtists(a ArtistsQuery) (*Artists, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+ARTISTS_SEARCH, nil)
 	if err != nil {
 		return nil, err
@@ -107,25 +109,7 @@ func SearchForArtists(artistMbid, artistName string, artistTmid, page int) (*Art
 	req.Header.Add(HEADER_KEY, SETLIST_FM_API_KEY)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	q := req.URL.Query()
-
-	if artistMbid != "" {
-		q.Add("artistMbid", artistMbid)
-	}
-
-	if artistName != "" {
-		q.Add("artistName", artistName)
-	}
-
-	if artistTmid > 0 {
-		q.Add("artistTmid", strconv.Itoa(artistTmid))
-	}
-
-	// Consider changing page to string
-	if page > 0 {
-		q.Add("p", strconv.Itoa(page))
-	}
-	req.URL.RawQuery = q.Encode()
+	req = a.BuildQuery(*req)
 
 	body, err := executeRequest(req)
 	if err != nil {
@@ -141,7 +125,7 @@ func SearchForArtists(artistMbid, artistName string, artistTmid, page int) (*Art
 	return artists, nil
 }
 
-func SearchForCities(country, city, state, stateCode string, page int) (*Cities, error){
+func SearchForCities(c CityQuery) (*Cities, error){
 	req, err := http.NewRequest("GET", REST_ENDPOINT + CITY_SEARCH, nil)
 	if err != nil {
 		return nil, err
@@ -149,30 +133,7 @@ func SearchForCities(country, city, state, stateCode string, page int) (*Cities,
 	req.Header.Add(HEADER_KEY, SETLIST_FM_API_KEY)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	q := req.URL.Query()
-
-	if country != ""{
-		q.Add("country", country)
-	}
-
-	if city == ""{
-		return nil, fmt.Errorf("setlistfmapi: you must specify a city when searching for a city")
-	}
-	q.Add("name", city)
-
-	if state != ""{
-		q.Add("state", state)
-	}
-
-	if stateCode != ""{
-		q.Add("stateCode", stateCode)
-	}
-
-	// Consider changing page to string
-	if page > 0 {
-		q.Add("p", strconv.Itoa(page))
-	}
-	req.URL.RawQuery = q.Encode()
+	req = c.BuildQuery(*req)
 
 	body, err := executeRequest(req)
 	if err != nil {
@@ -207,6 +168,31 @@ func ListAllCountries() (*Countries, error){
 	}
 
 	return countries, nil
+}
+
+func SearchForSetlists(s SetlistQuery) (*Setlists, error){
+	req, err := http.NewRequest("GET", REST_ENDPOINT + SETLIST_SEARCH, nil)
+	if err != nil {
+		return nil, err
+	}
+	req.Header.Add(HEADER_KEY, SETLIST_FM_API_KEY)
+	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
+
+	req = s.BuildQuery(*req)
+	fmt.Println(req.URL.RawQuery)
+	body, err := executeRequest(req)
+	if err != nil {
+		return nil, err
+	}
+
+	setlists := new(Setlists)
+	err = json.Unmarshal(body, &setlists)
+	if err != nil {
+		return nil, err
+	}
+
+	return setlists, nil
+
 }
 
 func executeRequest(req *http.Request) ([]byte, error) {

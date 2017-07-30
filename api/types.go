@@ -2,6 +2,9 @@ package api
 
 import (
 	"encoding/json"
+
+	"time"
+	"fmt"
 )
 
 type Artist struct {
@@ -236,4 +239,72 @@ func (v Venue) String() string {
 		panic("Venue.String()")
 	}
 	return string(jsonString)
+}
+
+type Date struct {
+	Day, Month, Year int
+}
+
+func (d Date) IsEmpty() bool{
+	empty := Date{}
+	return d == empty
+}
+
+func (d *Date) String() string {
+	if d.IsEmpty() {
+		return ""
+	}
+	if d.Day == 0 {
+		d.Day = time.Now().Day()
+	}
+	if d.Month == 0 {
+		d.Month = int(time.Now().Month())
+	}
+	if d.Year == 0 {
+		d.Year = time.Now().Year()
+	}
+	return fmt.Sprintf("%d-%d-%d", d.Day, d.Month, d.Year)
+}
+
+type DateTime struct {
+	Date   Date
+	Hour   int
+	Minute int
+	Second int
+}
+
+func (d DateTime) IsEmpty() bool {
+	empty := DateTime{}
+	return d == empty
+}
+
+func (d *DateTime) String() string {
+	if d.IsEmpty() {
+		return ""
+	}
+	if d.Date.Year == 0 {
+		d.Date.Year = time.Now().Year()
+	}
+	if d.Date.Month == 0 {
+		d.Date.Month = int(time.Now().Month())
+	}
+	if d.Date.Day == 0 {
+		d.Date.Day = time.Now().Day()
+	}
+	if d.Hour == 0 {
+		d.Hour = time.Now().Hour()
+	}
+	if d.Minute == 0 {
+		d.Minute = time.Now().Minute()
+	}
+	if d.Second == 0 {
+		d.Second = time.Now().Second()
+	}
+	return fmt.Sprintf("%d%d%d%d%d%d",
+		d.Date.Year,
+		d.Date.Month,
+		d.Date.Day,
+		d.Hour,
+		d.Minute,
+		d.Second)
 }
