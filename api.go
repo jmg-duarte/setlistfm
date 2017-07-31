@@ -1,4 +1,4 @@
-package api
+package setlistfm
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 )
 
 var (
-	SETLIST_FM_API_KEY = "e1d7b2e5-c3b7-459b-9597-cf5fd9296182"
+	SETLIST_FM_API_KEY = ""
 )
 
 const (
@@ -18,22 +18,22 @@ const (
 
 	ARTIST_BY_MBID          = "1.0/artist/%s"
 	ARTIST_SETLISTS_BY_MBID = "1.0/artist/%s/setlists"
-	ARTISTS_SEARCH         = "1.0/search/artists"
-	CITY_BY_GEOID          = "1.0/city/%s"
-	CITY_SEARCH            = "1.0/search/cities"
-	COUNTRIES_LIST         = "1.0/search/countries"
-	HEADER_KEY             = "x-api-key"
-	HEADER_ACCEPT_KEY      = "Accept"
-	HEADER_ACCEPT_VALUE    = "application/json"
-	SETLIST_SEARCH         = "1.0/search/setlists"
-	SETLIST_BY_VERSIONID   = "1.0/setlist/version/%s"
-	SETLIST_BY_ID          = "1.0/setlist/%s"
-	USER_BY_ID             = "1.0/user/%s"
-	USER_ATTENDED_CONCERTS = "1.0/user/%s/attended"
-	USER_EDITED_SETLISTS   = "1.0/user/%s/edited"
-	VENUE_SEARCH           = "1.0/search/venues"
-	VENUE_BY_ID            = "1.0/venue/%s"
-	VENUE_SETLISTS_BY_ID   = "1.0/venue/%s/setlists"
+	ARTISTS_SEARCH          = "1.0/search/artists"
+	CITY_BY_GEOID           = "1.0/city/%s"
+	CITY_SEARCH             = "1.0/search/cities"
+	COUNTRIES_LIST          = "1.0/search/countries"
+	HEADER_KEY              = "x-api-key"
+	HEADER_ACCEPT_KEY       = "Accept"
+	HEADER_ACCEPT_VALUE     = "application/json"
+	SETLIST_SEARCH          = "1.0/search/setlists"
+	SETLIST_BY_VERSIONID    = "1.0/setlist/version/%s"
+	SETLIST_BY_ID           = "1.0/setlist/%s"
+	USER_BY_ID              = "1.0/user/%s"
+	USER_ATTENDED_CONCERTS  = "1.0/user/%s/attended"
+	USER_EDITED_SETLISTS    = "1.0/user/%s/edited"
+	VENUE_SEARCH            = "1.0/search/venues"
+	VENUE_BY_ID             = "1.0/venue/%s"
+	VENUE_SETLISTS_BY_ID    = "1.0/venue/%s/setlists"
 )
 
 func ArtistByMBID(MBID string) (*Artist, error) {
