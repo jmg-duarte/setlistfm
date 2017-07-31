@@ -63,11 +63,21 @@ func TestUserByID(t *testing.T) {
 }
 
 func TestUserAttendedConcerts(t *testing.T) {
-	res, _ := UserAttendedConcerts("ExecutiveChimp",0)
+	res, _ := UserAttendedConcerts("ExecutiveChimp", 0)
 	fmt.Println(res)
 }
 
-func TestUserEditedPlaylists(t *testing.T) {
-	res, _ := UserEditedPlaylists("ExecutiveChimp", 0)
+func TestUserEditedSetlists(t *testing.T) {
+	res, _ := UserEditedSetlists("ExecutiveChimp", 0)
+	fmt.Println(res)
+}
+
+func TestVenueByID(t *testing.T) {
+	res, _ := VenueByID("73d466b5")
+	fmt.Println(res)
+}
+
+func TestVenueSetlists(t *testing.T) {
+	res, _ := VenueSetlists("73d466b5", 0)
 	fmt.Println(res)
 }
