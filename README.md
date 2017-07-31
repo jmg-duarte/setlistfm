@@ -1,4 +1,4 @@
-#[(Unofficial) setlist.fm Go API Wrapper](https://api.setlist.fm/)
+# [(Unofficial) setlist.fm Go API Wrapper](https://api.setlist.fm/)
 
 This is a Go implementation of the API spec which can be found [here](https://api.setlist.fm/).
 
@@ -24,4 +24,4 @@ func main() {
 }
 ```
 
-#This is a test version and all help is welcome!
+# This is a test version and all help is welcome!
