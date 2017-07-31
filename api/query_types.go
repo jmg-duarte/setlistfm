@@ -5,6 +5,10 @@ import (
 	"strconv"
 )
 
+type Query interface {
+	BuildQuery(r http.Request) *http.Request
+}
+
 type ArtistsQuery struct {
 	ArtistMbid string
 	ArtistName string
@@ -83,17 +87,45 @@ func (s SetlistQuery) BuildQuery(r http.Request) *http.Request {
 	q.Add("tourName", s.TourName)
 	q.Add("venueId", s.VenueID)
 	q.Add("venueName", s.VenueName)
+
 	if s.ArtistTmid != 0 {
 		q.Add("artistTmid", strconv.Itoa(s.ArtistTmid))
 	}
 	if s.Year != 0 {
 		q.Add("year", strconv.Itoa(s.Year))
 	}
-	// Consider changing page to string
+
 	if s.Page > 0 {
 		q.Add("p", strconv.Itoa(s.Page))
 	}
 
+	r.URL.RawQuery = q.Encode()
+
+	return &r
+}
+
+type VenueQuery struct {
+	CityID      string
+	CityName    string
+	CountryCode string
+	VenueName   string
+	State       string
+	StateCode   string
+	Page        int
+}
+
+func (v VenueQuery) BuildQuery(r http.Request) *http.Request {
+	q := r.URL.Query()
+	q.Add("cityId", v.CityID)
+	q.Add("cityName", v.CityName)
+	q.Add("country", v.CountryCode)
+	q.Add("name", v.VenueName)
+	q.Add("state", v.State)
+	q.Add("stateCode", v.StateCode)
+
+	if v.Page > 0 {
+		q.Add("p", strconv.Itoa(v.Page))
+	}
 	r.URL.RawQuery = q.Encode()
 
 	return &r

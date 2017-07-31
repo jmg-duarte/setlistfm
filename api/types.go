@@ -3,8 +3,8 @@ package api
 import (
 	"encoding/json"
 
-	"time"
 	"fmt"
+	"time"
 )
 
 type Artist struct {
@@ -61,7 +61,7 @@ type Country struct {
 func (c Country) String() string {
 	jsonString, err := json.Marshal(c)
 	if err != nil {
-		panic("Country.String()")
+		panic("CountryCode.String()")
 	}
 	return string(jsonString)
 }
@@ -241,11 +241,26 @@ func (v Venue) String() string {
 	return string(jsonString)
 }
 
+type Venues struct {
+	Venues       []Venue `json:"venue"`
+	Total        int     `json:"total"`
+	Page         int     `json:"page"`
+	ItemsPerPage int     `json:"itemsPerPage"`
+}
+
+func (v Venues) String() string {
+	jsonString, err := json.Marshal(v)
+	if err != nil {
+		panic("Venues.String()")
+	}
+	return string(jsonString)
+}
+
 type Date struct {
 	Day, Month, Year int
 }
 
-func (d Date) IsEmpty() bool{
+func (d Date) IsEmpty() bool {
 	empty := Date{}
 	return d == empty
 }
