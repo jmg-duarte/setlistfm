@@ -34,6 +34,14 @@ const (
 	HEADER_ACCEPT_VALUE = "application/json"
 )
 
+type Client struct {
+	APIKey string
+}
+
+func NewClient(APIKey string) *Client {
+	return &Client{APIKey: APIKey}
+}
+
 func (cl Client) ArtistByMBID(ctx context.Context, MBID string) (*Artist, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+ARTIST_BY_MBID, MBID), nil)
 	if err != nil {
