@@ -1,6 +1,7 @@
 package setlistfm
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -33,7 +34,7 @@ const (
 	HEADER_ACCEPT_VALUE = "application/json"
 )
 
-func (cl Client) ArtistByMBID(MBID string) (*Artist, error) {
+func (cl Client) ArtistByMBID(ctx context.Context, MBID string) (*Artist, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+ARTIST_BY_MBID, MBID), nil)
 	if err != nil {
 		return nil, err
@@ -41,7 +42,7 @@ func (cl Client) ArtistByMBID(MBID string) (*Artist, error) {
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -55,7 +56,7 @@ func (cl Client) ArtistByMBID(MBID string) (*Artist, error) {
 	return artist, nil
 }
 
-func (cl Client) ArtistSetlistsByMBID(MBID string, page int) (*Setlists, error) {
+func (cl Client) ArtistSetlistsByMBID(ctx context.Context, MBID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+ARTIST_SETLISTS_BY_MBID, MBID), nil)
 	if err != nil {
 		return nil, err
@@ -70,7 +71,7 @@ func (cl Client) ArtistSetlistsByMBID(MBID string, page int) (*Setlists, error) 
 	}
 	req.URL.RawQuery = q.Encode()
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -84,7 +85,7 @@ func (cl Client) ArtistSetlistsByMBID(MBID string, page int) (*Setlists, error) 
 	return setlists, nil
 }
 
-func (cl Client) CityByGeoID(geoID string) (*City, error) {
+func (cl Client) CityByGeoID(ctx context.Context, geoID string) (*City, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+CITY_BY_GEOID, geoID), nil)
 	if err != nil {
 		return nil, err
@@ -92,7 +93,7 @@ func (cl Client) CityByGeoID(geoID string) (*City, error) {
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -106,7 +107,7 @@ func (cl Client) CityByGeoID(geoID string) (*City, error) {
 	return city, nil
 }
 
-func (cl Client) SearchForArtists(a ArtistsQuery) (*Artists, error) {
+func (cl Client) SearchForArtists(ctx context.Context, a ArtistsQuery) (*Artists, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+ARTISTS_SEARCH, nil)
 	if err != nil {
 		return nil, err
@@ -116,7 +117,7 @@ func (cl Client) SearchForArtists(a ArtistsQuery) (*Artists, error) {
 
 	req = a.BuildQuery(*req)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -130,7 +131,7 @@ func (cl Client) SearchForArtists(a ArtistsQuery) (*Artists, error) {
 	return artists, nil
 }
 
-func (cl Client) SearchForCities(c CityQuery) (*Cities, error) {
+func (cl Client) SearchForCities(ctx context.Context, c CityQuery) (*Cities, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+CITY_SEARCH, nil)
 	if err != nil {
 		return nil, err
@@ -140,7 +141,7 @@ func (cl Client) SearchForCities(c CityQuery) (*Cities, error) {
 
 	req = c.BuildQuery(*req)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -153,7 +154,7 @@ func (cl Client) SearchForCities(c CityQuery) (*Cities, error) {
 	return cities, nil
 }
 
-func (cl Client) ListAllCountries() (*Countries, error) {
+func (cl Client) ListAllCountries(ctx context.Context) (*Countries, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+COUNTRIES_LIST, nil)
 	if err != nil {
 		return nil, err
@@ -161,7 +162,7 @@ func (cl Client) ListAllCountries() (*Countries, error) {
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -175,7 +176,7 @@ func (cl Client) ListAllCountries() (*Countries, error) {
 	return countries, nil
 }
 
-func (cl Client) SearchForSetlists(s SetlistQuery) (*Setlists, error) {
+func (cl Client) SearchForSetlists(ctx context.Context, s SetlistQuery) (*Setlists, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+SETLIST_SEARCH, nil)
 	if err != nil {
 		return nil, err
@@ -185,7 +186,7 @@ func (cl Client) SearchForSetlists(s SetlistQuery) (*Setlists, error) {
 
 	req = s.BuildQuery(*req)
 	fmt.Println(req.URL.RawQuery)
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -199,7 +200,7 @@ func (cl Client) SearchForSetlists(s SetlistQuery) (*Setlists, error) {
 	return setlists, nil
 }
 
-func (cl Client) SearchForVenues(v VenueQuery) (*Venues, error) {
+func (cl Client) SearchForVenues(ctx context.Context, v VenueQuery) (*Venues, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+VENUE_SEARCH, nil)
 	if err != nil {
 		return nil, err
@@ -209,7 +210,7 @@ func (cl Client) SearchForVenues(v VenueQuery) (*Venues, error) {
 
 	req = v.BuildQuery(*req)
 	fmt.Println(req.URL.RawQuery)
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -223,7 +224,7 @@ func (cl Client) SearchForVenues(v VenueQuery) (*Venues, error) {
 	return venues, nil
 }
 
-func (cl Client) SetlistByVersionID(versionID string) (*Setlist, error) {
+func (cl Client) SetlistByVersionID(ctx context.Context, versionID string) (*Setlist, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+SETLIST_BY_VERSIONID, versionID), nil)
 	if err != nil {
 		return nil, err
@@ -231,7 +232,7 @@ func (cl Client) SetlistByVersionID(versionID string) (*Setlist, error) {
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -245,7 +246,7 @@ func (cl Client) SetlistByVersionID(versionID string) (*Setlist, error) {
 	return setlist, nil
 }
 
-func (cl Client) SetlistByID(ID string) (*Setlist, error) {
+func (cl Client) SetlistByID(ctx context.Context, ID string) (*Setlist, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+SETLIST_BY_ID, ID), nil)
 	if err != nil {
 		return nil, err
@@ -253,7 +254,7 @@ func (cl Client) SetlistByID(ID string) (*Setlist, error) {
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -267,7 +268,7 @@ func (cl Client) SetlistByID(ID string) (*Setlist, error) {
 	return setlist, nil
 }
 
-func (cl Client) UserByID(ID string) (*User, error) {
+func (cl Client) UserByID(ctx context.Context, ID string) (*User, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+USER_BY_ID, ID), nil)
 	if err != nil {
 		return nil, err
@@ -275,7 +276,7 @@ func (cl Client) UserByID(ID string) (*User, error) {
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -289,7 +290,7 @@ func (cl Client) UserByID(ID string) (*User, error) {
 	return user, nil
 }
 
-func (cl Client) UserAttendedConcerts(ID string, page int) (*Setlists, error) {
+func (cl Client) UserAttendedConcerts(ctx context.Context, ID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+USER_ATTENDED_CONCERTS, ID), nil)
 	if err != nil {
 		return nil, err
@@ -303,7 +304,7 @@ func (cl Client) UserAttendedConcerts(ID string, page int) (*Setlists, error) {
 	}
 	req.URL.RawQuery = q.Encode()
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -317,7 +318,7 @@ func (cl Client) UserAttendedConcerts(ID string, page int) (*Setlists, error) {
 	return setlists, nil
 }
 
-func (cl Client) UserEditedSetlists(ID string, page int) (*Setlists, error) {
+func (cl Client) UserEditedSetlists(ctx context.Context, ID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+USER_EDITED_SETLISTS, ID), nil)
 	if err != nil {
 		return nil, err
@@ -331,7 +332,7 @@ func (cl Client) UserEditedSetlists(ID string, page int) (*Setlists, error) {
 	}
 	req.URL.RawQuery = q.Encode()
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -345,7 +346,7 @@ func (cl Client) UserEditedSetlists(ID string, page int) (*Setlists, error) {
 	return setlists, nil
 }
 
-func (cl Client) VenueByID(ID string) (*Venue, error) {
+func (cl Client) VenueByID(ctx context.Context, ID string) (*Venue, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+VENUE_BY_ID, ID), nil)
 	if err != nil {
 		return nil, err
@@ -353,7 +354,7 @@ func (cl Client) VenueByID(ID string) (*Venue, error) {
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -367,7 +368,7 @@ func (cl Client) VenueByID(ID string) (*Venue, error) {
 	return venue, nil
 }
 
-func (cl Client) VenueSetlists(ID string, page int) (*Setlists, error) {
+func (cl Client) VenueSetlists(ctx context.Context, ID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+VENUE_SETLISTS_BY_ID, ID), nil)
 	if err != nil {
 		return nil, err
@@ -381,7 +382,7 @@ func (cl Client) VenueSetlists(ID string, page int) (*Setlists, error) {
 	}
 	req.URL.RawQuery = q.Encode()
 
-	body, err := executeRequest(req)
+	body, err := executeRequest(ctx, req)
 	if err != nil {
 		return nil, err
 	}
@@ -395,7 +396,8 @@ func (cl Client) VenueSetlists(ID string, page int) (*Setlists, error) {
 	return setlists, nil
 }
 
-func executeRequest(req *http.Request) ([]byte, error) {
+func executeRequest(ctx context.Context, req *http.Request) ([]byte, error) {
+	req = req.WithContext(ctx)
 	client := &http.Client{Timeout: time.Second * 10}
 	resp, err := client.Do(req)
 	if err != nil {
