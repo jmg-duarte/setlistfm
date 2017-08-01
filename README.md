@@ -1,8 +1,6 @@
 # [(Unofficial) setlist.fm Go API Wrapper](https://api.setlist.fm/)
 
-This is a Go implementation of the API spec which can be found [here](https://api.setlist.fm/).
-
-It is configured for version 1.0 of the API and requires no external packages.
+This is a Go implementation of the setlisft.fm API 1.0 specification which can be found [here](https://api.setlist.fm/). This wrapper requires no external libraries.
 
 ## [Installation](#install)
 ```
@@ -21,8 +19,13 @@ client := setlistfm.NewClient("api-key")
 
 func main() {
     ctx := context.Background()
-    fmt.Println(client.ArtistByMBID(ctx, "3bd680c8")) 
+    fmt.Println(client.ArtistByMBID(ctx, "3bd680c8"))
 }
 ```
-
-# This is a test version and all help is welcome!
+## TODO
+* Finish documentation
+    * Add better documentation for types
+* Add more useful methods to types
+* Handle errors when parsing JSON API response
+* Add more usage examples
+* Do some actual testing
