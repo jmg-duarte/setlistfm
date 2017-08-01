@@ -17,10 +17,11 @@ import (
     "github.com/jm-duarte/setlistfm"
 )
 
-SETLIST_FM_API_KEY = "<api key>"
+client := setlistfm.NewClient("api-key")
 
 func main() {
-    fmt.Println(setlistfm.ArtistByMBID("3bd680c8")) 
+    ctx := context.Background()
+    fmt.Println(client.ArtistByMBID(ctx, "3bd680c8")) 
 }
 ```
 
