@@ -38,10 +38,12 @@ type Client struct {
 	APIKey string
 }
 
+// NewClient - Generate a new Client with the given APIKey
 func NewClient(APIKey string) *Client {
 	return &Client{APIKey: APIKey}
 }
 
+// ArtistByMBID - Search for an Artist by MBID
 func (cl Client) ArtistByMBID(ctx context.Context, MBID string) (*Artist, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+ARTIST_BY_MBID, MBID), nil)
 	if err != nil {
@@ -64,6 +66,7 @@ func (cl Client) ArtistByMBID(ctx context.Context, MBID string) (*Artist, error)
 	return artist, nil
 }
 
+// ArtistSetlistsByMBID - Search for an artists setlists by MBID
 func (cl Client) ArtistSetlistsByMBID(ctx context.Context, MBID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+ARTIST_SETLISTS_BY_MBID, MBID), nil)
 	if err != nil {
@@ -93,6 +96,7 @@ func (cl Client) ArtistSetlistsByMBID(ctx context.Context, MBID string, page int
 	return setlists, nil
 }
 
+// CityByGeoID - Search for a city by GeoID
 func (cl Client) CityByGeoID(ctx context.Context, geoID string) (*City, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+CITY_BY_GEOID, geoID), nil)
 	if err != nil {
@@ -115,6 +119,7 @@ func (cl Client) CityByGeoID(ctx context.Context, geoID string) (*City, error) {
 	return city, nil
 }
 
+// SearchForArtists - Search for an artist using an ArtistsQuery
 func (cl Client) SearchForArtists(ctx context.Context, a ArtistsQuery) (*Artists, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+ARTISTS_SEARCH, nil)
 	if err != nil {
@@ -139,6 +144,7 @@ func (cl Client) SearchForArtists(ctx context.Context, a ArtistsQuery) (*Artists
 	return artists, nil
 }
 
+// SearchForCities - Search for a city using a CityQuery
 func (cl Client) SearchForCities(ctx context.Context, c CityQuery) (*Cities, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+CITY_SEARCH, nil)
 	if err != nil {
@@ -162,6 +168,7 @@ func (cl Client) SearchForCities(ctx context.Context, c CityQuery) (*Cities, err
 	return cities, nil
 }
 
+// ListAllCountries - Lists all countries. This piece of documentation is almost useless
 func (cl Client) ListAllCountries(ctx context.Context) (*Countries, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+COUNTRIES_LIST, nil)
 	if err != nil {
