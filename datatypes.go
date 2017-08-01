@@ -237,6 +237,11 @@ func (s Setlist) String() string {
 	return string(jsonString)
 }
 
+// IsEqual - Compares two setlists according to the setlist.fm API docs
+func (s Setlist) IsEqual(s1 Setlist) bool {
+	return s.ID == s1.ID && s.VersionID == s1.VersionID
+}
+
 // Setlists - A Result consisting of a list of setlists.
 type Setlists struct {
 	Setlists     []Setlist `json:"setlist"`
