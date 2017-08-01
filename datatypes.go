@@ -7,6 +7,10 @@ import (
 	"time"
 )
 
+// Artist - This class represents an artist.
+// An artist is a musician or a group of musicians.
+// Each artist has a definite Musicbrainz Identifier (MBID)
+// with which the artist can be uniquely identified.
 type Artist struct {
 	MBID           string `json:"mbid"`
 	TMID           int    `json:"tmid"`
@@ -24,6 +28,7 @@ func (a Artist) String() string {
 	return string(jsonString)
 }
 
+// Artists - A Result consisting of a list of artists.
 type Artists struct {
 	Type         string   `json:"type,omitempty"`
 	Artists      []Artist `json:"artist"`
@@ -40,6 +45,7 @@ func (a Artists) String() string {
 	return string(jsonString)
 }
 
+// Coordinates - Coordinates of a point on the globe. Mostly used for Cities.
 type Coordinates struct {
 	Longitude float32 `json:"long"`
 	Latitude  float32 `json:"lat"`
@@ -53,6 +59,7 @@ func (c Coordinates) String() string {
 	return string(jsonString)
 }
 
+// Country - This class represents a country on earth.
 type Country struct {
 	Code string `json:"code"`
 	Name string `json:"name"`
@@ -66,6 +73,7 @@ func (c Country) String() string {
 	return string(jsonString)
 }
 
+// Countries - A Result consisting of a list of countries.
 type Countries struct {
 	Countries    []Country `json:"country"`
 	Total        int       `json:"total"`
@@ -81,6 +89,8 @@ func (c Countries) String() string {
 	return string(jsonString)
 }
 
+// City -  	This class represents a city where Venues are located.
+// Most of the original city data was taken from Geonames.org.
 type City struct {
 	ID        string      `json:"id"`
 	Name      string      `json:"name"`
@@ -98,6 +108,7 @@ func (c City) String() string {
 	return string(jsonString)
 }
 
+// Cities - A Result consisting of a list of cities.
 type Cities struct {
 	Cities       []City `json:"cities"`
 	Total        int    `json:"total"`
@@ -113,6 +124,7 @@ func (c Cities) String() string {
 	return string(jsonString)
 }
 
+// Error - Returned in case of an error.
 type Error struct {
 	Code      int    `json:"code"`
 	Status    string `json:"status"`
@@ -128,6 +140,7 @@ func (e Error) String() string {
 	return string(jsonString)
 }
 
+// User - This class represents a user.
 type User struct {
 	UserID   string `json:"userId"`
 	Fullname string `json:"fullname"`
@@ -148,6 +161,7 @@ func (u User) String() string {
 	return string(jsonString)
 }
 
+// Tour - The tour a setlist was a part of.
 type Tour struct {
 	Name string `json:"name"`
 }
@@ -160,6 +174,7 @@ func (t Tour) String() string {
 	return string(jsonString)
 }
 
+// Song - This class represents a song that is part of a Set.
 type Song struct {
 	Name  string `json:"name"`
 	With  Artist `json:"with,omitempty"`
@@ -176,6 +191,8 @@ func (s Song) String() string {
 	return string(jsonString)
 }
 
+// Set - A setlist consists of different (at least one) sets.
+// Sets can either be sets as defined in the Guidelines or encores.
 type Set struct {
 	Name   string `json:"name"`
 	Encore int    `json:"encore"`
@@ -190,6 +207,15 @@ func (s Set) String() string {
 	return string(jsonString)
 }
 
+// Setlist - Setlists, that's what it's all about.
+// So if you're trying to use this API without knowing what a setlist is
+// then you're kinda wrong on this page ;-).
+// A setlist can be distinguished from other setlists by its unique id.
+// But as setlist.fm works the wiki way, there can be different versions of one setlist
+// (each time a user updates a setlist a new version gets created).
+// These different versions have a unique id on its own.
+// So setlists can have the same id although they differ as far as the content is concerned -
+// thus the best way to check if two setlists are the same is to compare their versionIds.
 type Setlist struct {
 	Artist      Artist `json:"artist"`
 	Venue       Venue  `json:"venue"`
@@ -211,6 +237,7 @@ func (s Setlist) String() string {
 	return string(jsonString)
 }
 
+// Setlists - A Result consisting of a list of setlists.
 type Setlists struct {
 	Setlists     []Setlist `json:"setlist"`
 	Total        int       `json:"total"`
@@ -226,6 +253,11 @@ func (s Setlists) String() string {
 	return string(jsonString)
 }
 
+// Venue - Venues are places where concerts take place.
+// They usually consist of a venue name and a city -
+// but there are also some venues that do not have a city attached yet.
+// In such a case, the city simply isn't set and the city and country
+// may (but do not have to) be in the name.
 type Venue struct {
 	City City   `json:"city"`
 	URL  string `json:"url"`
@@ -241,6 +273,7 @@ func (v Venue) String() string {
 	return string(jsonString)
 }
 
+// Venues - A Result consisting of a list of venues.
 type Venues struct {
 	Venues       []Venue `json:"venue"`
 	Total        int     `json:"total"`
@@ -256,10 +289,12 @@ func (v Venues) String() string {
 	return string(jsonString)
 }
 
+// Date - Represents a date on the calendar
 type Date struct {
 	Day, Month, Year int
 }
 
+// IsEmpty - Checks if the given Date object is equal to the default value object of Date
 func (d Date) IsEmpty() bool {
 	empty := Date{}
 	return d == empty
@@ -281,6 +316,7 @@ func (d *Date) String() string {
 	return fmt.Sprintf("%d-%d-%d", d.Day, d.Month, d.Year)
 }
 
+// DateTime - Adds hours, minutes and seconds to the Date object
 type DateTime struct {
 	Date   Date
 	Hour   int
@@ -288,6 +324,7 @@ type DateTime struct {
 	Second int
 }
 
+// IsEmpty - Checks if the given DateTime object is equal to the default value object of DateTime
 func (d DateTime) IsEmpty() bool {
 	empty := DateTime{}
 	return d == empty
