@@ -34,7 +34,7 @@ func TestSearchForArtists(t *testing.T) {
 
 func TestSearchForCities(t *testing.T) {
 	c := NewClient("e1d7b2e5-c3b7-459b-9597-cf5fd9296182")
-	res, _ := c.SearchForCities(context.TODO(), CityQuery{Name: "Lisbon"})
+	res, _ := c.SearchForCities(context.TODO(), CityQuery{CountryCode: "PT" ,Name: "Lisbon"})
 	fmt.Println(res)
 }
 

@@ -5,10 +5,17 @@ import (
 	"strconv"
 )
 
+// Query - Defines a Query type build to simplify the methods querying the API
 type Query interface {
-	BuildQuery(r http.Request) *http.Request
+	// AddQuery
+	AddQuery(r http.Request) *http.Request
 }
 
+// ArtistsQuery - Used by SearchForArtists
+// If Page < 1 then the value will not be passed to the request and the API's default (1) will be used
+// If the Artist information doesn't match you'll most likely won't receive a result
+// e.g. If you search for the name "Opeth" and the "Mbid" passed is from Celine Dion
+// Tip: Only use one at a time
 type ArtistsQuery struct {
 	ArtistMbid string
 	ArtistName string
@@ -16,7 +23,8 @@ type ArtistsQuery struct {
 	Page       int
 }
 
-func (a ArtistsQuery) BuildQuery(r http.Request) *http.Request {
+// AddQuery - Takes an http.Request and adds the Receivers query
+func (a ArtistsQuery) AddQuery(r http.Request) *http.Request {
 	q := r.URL.Query()
 
 	q.Add("artistMbid", a.ArtistMbid)
@@ -30,18 +38,26 @@ func (a ArtistsQuery) BuildQuery(r http.Request) *http.Request {
 	return &r
 }
 
+// CityQuery - Used by SearchForCities
+// If Page < 1 then the value will not be passed to the request and the API's default (1) will be used
+// As in other queries, the fields cannot be exclusive (they should make sense)
+// The CountryCode is represented like:
+// "PT" - Portugal
+// In case of doubt consult the API documentation - https://api.setlist.fm/docs/1.0/
+// Or you can make use of this awesome wrapper and check with ListAllCountries
 type CityQuery struct {
-	Country   string
-	Name      string
-	State     string
-	StateCode string
-	Page      int
+	CountryCode string
+	Name        string
+	State       string
+	StateCode   string
+	Page        int
 }
 
-func (c CityQuery) BuildQuery(r http.Request) *http.Request {
+// AddQuery - Takes an http.Request and adds the Receivers query
+func (c CityQuery) AddQuery(r http.Request) *http.Request {
 	q := r.URL.Query()
 
-	q.Add("country", c.Country)
+	q.Add("country", c.CountryCode)
 	q.Add("name", c.Name)
 	q.Add("state", c.State)
 	q.Add("stateCode", c.StateCode)
@@ -55,6 +71,9 @@ func (c CityQuery) BuildQuery(r http.Request) *http.Request {
 	return &r
 }
 
+// SetlistQuery - Used by SearchForSetlists
+// If Page < 1 then the value will not be passed to the request and the API's default (1) will be used
+// Multiple uses of the LastUpdated field may change results
 type SetlistQuery struct {
 	ArtistMbid  string
 	ArtistName  string
@@ -73,7 +92,8 @@ type SetlistQuery struct {
 	Page        int
 }
 
-func (s SetlistQuery) BuildQuery(r http.Request) *http.Request {
+// AddQuery - Takes an http.Request and adds the Receivers query
+func (s SetlistQuery) AddQuery(r http.Request) *http.Request {
 	q := r.URL.Query()
 	q.Add("artistMbid", s.ArtistMbid)
 	q.Add("artistName", s.ArtistName)
@@ -104,6 +124,8 @@ func (s SetlistQuery) BuildQuery(r http.Request) *http.Request {
 	return &r
 }
 
+// VenueQuery - Used by SearchForVenues
+// If Page < 1 then the value will not be passed to the request and the API's default (1) will be used
 type VenueQuery struct {
 	CityID      string
 	CityName    string
@@ -114,7 +136,8 @@ type VenueQuery struct {
 	Page        int
 }
 
-func (v VenueQuery) BuildQuery(r http.Request) *http.Request {
+// AddQuery - Takes an http.Request and adds the Receivers query
+func (v VenueQuery) AddQuery(r http.Request) *http.Request {
 	q := r.URL.Query()
 	q.Add("cityId", v.CityID)
 	q.Add("cityName", v.CityName)

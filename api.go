@@ -123,7 +123,7 @@ func (cl Client) SearchForArtists(ctx context.Context, a ArtistsQuery) (*Artists
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	req = a.BuildQuery(*req)
+	req = a.AddQuery(*req)
 
 	body, err := executeRequest(ctx, req)
 	if err != nil {
@@ -147,7 +147,7 @@ func (cl Client) SearchForCities(ctx context.Context, c CityQuery) (*Cities, err
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	req = c.BuildQuery(*req)
+	req = c.AddQuery(*req)
 
 	body, err := executeRequest(ctx, req)
 	if err != nil {
@@ -192,7 +192,7 @@ func (cl Client) SearchForSetlists(ctx context.Context, s SetlistQuery) (*Setlis
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	req = s.BuildQuery(*req)
+	req = s.AddQuery(*req)
 	fmt.Println(req.URL.RawQuery)
 	body, err := executeRequest(ctx, req)
 	if err != nil {
@@ -216,7 +216,7 @@ func (cl Client) SearchForVenues(ctx context.Context, v VenueQuery) (*Venues, er
 	req.Header.Add(HEADER_KEY, cl.APIKey)
 	req.Header.Add(HEADER_ACCEPT_KEY, HEADER_ACCEPT_VALUE)
 
-	req = v.BuildQuery(*req)
+	req = v.AddQuery(*req)
 	fmt.Println(req.URL.RawQuery)
 	body, err := executeRequest(ctx, req)
 	if err != nil {

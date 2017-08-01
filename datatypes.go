@@ -59,7 +59,7 @@ func (c Coordinates) String() string {
 	return string(jsonString)
 }
 
-// Country - This class represents a country on earth.
+// CountryCode - This class represents a country on earth.
 type Country struct {
 	Code string `json:"code"`
 	Name string `json:"name"`
