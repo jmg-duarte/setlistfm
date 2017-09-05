@@ -191,6 +191,7 @@ func (cl Client) ListAllCountries(ctx context.Context) (*Countries, error) {
 	return countries, nil
 }
 
+// SearchForSetlists - For a given SetlistQuery returns a Setlists struct
 func (cl Client) SearchForSetlists(ctx context.Context, s SetlistQuery) (*Setlists, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+SETLIST_SEARCH, nil)
 	if err != nil {
@@ -215,6 +216,7 @@ func (cl Client) SearchForSetlists(ctx context.Context, s SetlistQuery) (*Setlis
 	return setlists, nil
 }
 
+// SearchForVenues - For a given VenueQuery returns a Venues struct
 func (cl Client) SearchForVenues(ctx context.Context, v VenueQuery) (*Venues, error) {
 	req, err := http.NewRequest("GET", REST_ENDPOINT+VENUE_SEARCH, nil)
 	if err != nil {
@@ -239,6 +241,7 @@ func (cl Client) SearchForVenues(ctx context.Context, v VenueQuery) (*Venues, er
 	return venues, nil
 }
 
+// SetlistsByVersionID - For a given setlist version ID, fetch the setlist
 func (cl Client) SetlistByVersionID(ctx context.Context, versionID string) (*Setlist, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+SETLIST_BY_VERSIONID, versionID), nil)
 	if err != nil {
@@ -261,6 +264,7 @@ func (cl Client) SetlistByVersionID(ctx context.Context, versionID string) (*Set
 	return setlist, nil
 }
 
+// SetlistByID - For a given setlist ID, fetch the setlist
 func (cl Client) SetlistByID(ctx context.Context, ID string) (*Setlist, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+SETLIST_BY_ID, ID), nil)
 	if err != nil {
@@ -283,6 +287,7 @@ func (cl Client) SetlistByID(ctx context.Context, ID string) (*Setlist, error) {
 	return setlist, nil
 }
 
+// UserByID - For a given user ID, fetch that user
 func (cl Client) UserByID(ctx context.Context, ID string) (*User, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+USER_BY_ID, ID), nil)
 	if err != nil {
@@ -305,6 +310,8 @@ func (cl Client) UserByID(ctx context.Context, ID string) (*User, error) {
 	return user, nil
 }
 
+// UserAttendedConcerts - For a given user ID, fetch the list of concerts the user attended
+// Has the option for a page number
 func (cl Client) UserAttendedConcerts(ctx context.Context, ID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+USER_ATTENDED_CONCERTS, ID), nil)
 	if err != nil {
@@ -333,6 +340,8 @@ func (cl Client) UserAttendedConcerts(ctx context.Context, ID string, page int) 
 	return setlists, nil
 }
 
+// UserEditedSetlists - For a given user ID, fetch the list of setlists edited by the user
+// Has the option for a page number
 func (cl Client) UserEditedSetlists(ctx context.Context, ID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+USER_EDITED_SETLISTS, ID), nil)
 	if err != nil {
@@ -361,6 +370,7 @@ func (cl Client) UserEditedSetlists(ctx context.Context, ID string, page int) (*
 	return setlists, nil
 }
 
+// VenueByID - Fetch a venue by it's ID
 func (cl Client) VenueByID(ctx context.Context, ID string) (*Venue, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+VENUE_BY_ID, ID), nil)
 	if err != nil {
@@ -383,6 +393,8 @@ func (cl Client) VenueByID(ctx context.Context, ID string) (*Venue, error) {
 	return venue, nil
 }
 
+// VenueSetlists - Fetch a venue setlists given the venue's ID
+// Has the option for a page number
 func (cl Client) VenueSetlists(ctx context.Context, ID string, page int) (*Setlists, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf(REST_ENDPOINT+VENUE_SETLISTS_BY_ID, ID), nil)
 	if err != nil {
