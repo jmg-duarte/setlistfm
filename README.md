@@ -4,7 +4,7 @@ This is a Go implementation of the setlisft.fm API 1.0 specification which can b
 
 ## [Installation](#install)
 ```
-go get github.com/jm-duarte/setlistfm
+go get github.com/jmg-duarte/setlistfm
 ```
 
 ## [Usage](#usage)
