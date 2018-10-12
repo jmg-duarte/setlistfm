@@ -207,6 +207,18 @@ func (s Set) String() string {
 	return string(jsonString)
 }
 
+type Sets struct {
+	Set []Set `json:"set"`
+}
+
+func (s Sets) String() string {
+	jsonString, err := json.Marshal(s)
+	if err != nil {
+		panic("Sets.String()")
+	}
+	return string(jsonString)
+}
+
 // Setlist - Setlists, that's what it's all about.
 // So if you're trying to use this API without knowing what a setlist is
 // then you're kinda wrong on this page ;-).
@@ -220,7 +232,7 @@ type Setlist struct {
 	Artist      Artist `json:"artist"`
 	Venue       Venue  `json:"venue"`
 	Tour        Tour   `json:"tour"`
-	Set         []Set  `json:"set"`
+	Sets        Sets   `json:"sets"`
 	Info        string `json:"info"`
 	URL         string `json:"url"`
 	ID          string `json:"id"`
