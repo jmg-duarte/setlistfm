@@ -12,7 +12,7 @@ go get github.com/jmg-duarte/setlistfm
 package main
 import (
     "fmt"
-    "github.com/jm-duarte/setlistfm"
+    "github.com/jmg-duarte/setlistfm"
 )
 
 client := setlistfm.NewClient("api-key")
